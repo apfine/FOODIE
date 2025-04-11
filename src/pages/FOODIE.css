@@ -1,0 +1,163 @@
+body, html, #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+  }
+  
+  .foodie-container {
+    min-height: 100vh;
+    width: 100vw;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow-y: auto; /* Allow scroll if needed */
+    position: relative;
+    font-family: 'Poppins', sans-serif;
+    padding: 2rem 1rem; /* Small padding for smaller screens */
+    box-sizing: border-box;
+  }
+  
+  .foodie-logo {
+    width: 200px;
+    height: auto;
+    margin-bottom: 1.5rem;
+    filter: drop-shadow(0 0 15px #00ffc8);
+    z-index: 2;
+  }
+  
+  .upload-section {
+    background: rgba(255, 255, 255, 0.05);
+    border: 2px dashed #00ffc8;
+    border-radius: 20px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    transition: background 0.3s, border-color 0.3s;
+    z-index: 2;
+    position: relative;
+    box-sizing: border-box;
+  }
+  
+  .upload-section.dragging {
+    background: rgba(0, 255, 200, 0.1);
+    border-color: #00bfa5;
+  }
+  
+  .upload-section p {
+    color: #00ffc8;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .file-input {
+    display: none;
+  }
+  
+  .test-button {
+    background: #00ffc8;
+    color: #0f2027;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    margin-top: 1.5rem;
+    z-index: 2;
+  }
+  
+  .test-button:hover {
+    background: #00bfa5;
+    transform: scale(1.05);
+  }
+  
+  .preview-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 20px;
+    justify-content: center;
+  }
+  
+  .preview-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 2px 8px rgba(0, 255, 200, 0.3);
+    transition: transform 0.3s;
+  }
+  
+  .preview-image:hover {
+    transform: scale(1.05);
+  }
+  
+  /* Upload Box (Alternate Style) */
+  .upload-box {
+    border: 2px dashed #00ffe0;
+    border-radius: 1rem;
+    padding: 2rem;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+    color: #00ffe0;
+    font-weight: bold;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    box-sizing: border-box;
+  }
+  
+  .upload-box:hover {
+    border-color: #00bfa5;
+  }
+  
+  /* Button */
+  .upload-button {
+    margin-top: 1.5rem;
+    padding: 0.75rem 2rem;
+    background-color: #00ffe0;
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: bold;
+    color: #00332e;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .upload-button:hover {
+    background-color: #00bfa5;
+  }
+  
+  /* RESPONSIVE BREAKPOINT */
+  @media (max-width: 600px) {
+    .upload-section {
+      padding: 1.5rem;
+    }
+  
+    .upload-box {
+      padding: 1.5rem;
+      font-size: 1rem;
+    }
+  
+    .foodie-logo {
+      width: 180px;
+      margin-bottom: 1rem;
+    }
+  
+    .preview-image {
+      width: 80px;
+      height: 80px;
+    }
+  
+    .test-button, .upload-button {
+      width: 100%;
+      font-size: 1.1rem;
+    }
+  }
+  

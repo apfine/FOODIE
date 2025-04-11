@@ -44,7 +44,7 @@ function FOODIE() {
     try {
       setUploading(true);
   
-      const response = await fetch('https://foodie-backend-cn0s.onrender.com/predict', {
+      const response = await fetch('https://foodie-backend-cn0s.onrender.com/predict/', {
         method: 'POST',
         body: formData,
       });

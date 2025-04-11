@@ -53,14 +53,12 @@ function FOODIE() {
         throw new Error(`Server error: ${response.status}`);
       }
   
-      //  THIS LINE IS CHANGED!
-      const data = await response.json(); // Expect JSON response
+      //  Read the response as a BLOB (image data)
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
   
-      // Now check what you receive
-      console.log('Server response:', data);
-  
-      //  Adjust according to what the backend returns
-      navigate('/results', { state: { resultData: data } });
+      // Pass the generated image URL to the next page
+      navigate('/results', { state: { resultImage: imageUrl } });
   
     } catch (error: any) {
       console.error('Error uploading file:', error);

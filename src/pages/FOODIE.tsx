@@ -53,9 +53,10 @@ function FOODIE() {
         throw new Error(`Server error: ${response.status}`);
       }
   
-      const data = await response.json();
-      
-      navigate('/results', { state: { resultImage: data.imageUrl, otherData: data } });
+      const blob = await response.blob();
+      const imageUrl = URL.createObjectURL(blob);
+  
+      navigate('/results', { state: { resultImage: imageUrl } });
     } catch (error: any) {
       console.error('Error uploading file:', error);
       alert('Upload failed: ' + error.message);
@@ -63,6 +64,7 @@ function FOODIE() {
       setUploading(false);
     }
   };
+  
   
 
   return (

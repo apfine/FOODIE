@@ -1,74 +1,107 @@
-import "./FOODIE.css";
-import { useState, useRef } from "react";
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import logo from './FOODIE.svg';
+import './FOODIE.css';
 
-export default function FOODIE() {
-  const [isDragging, setIsDragging] = useState(false);
-  const [images, setImages] = useState<string[]>([]);
-  const inputRef = useRef<HTMLInputElement>(null);
+function FOODIE() {
+  const [file, setFile] = useState<File | null>(null);
+  const [dragging, setDragging] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const navigate = useNavigate();
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setIsDragging(true);
+    setDragging(true);
   };
 
   const handleDragLeave = () => {
-    setIsDragging(false);
+    setDragging(false);
   };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
     e.preventDefault();
-    setIsDragging(false);
-    const files = Array.from(e.dataTransfer.files);
-    handleFiles(files);
-  };
-
-  const handleClickUpload = () => {
-    inputRef.current?.click();
-  };
-
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      handleFiles(files);
+    setDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFile(e.dataTransfer.files[0]);
     }
   };
 
-  const handleFiles = (files: File[]) => {
-    const validImages = files.filter(file => file.type.startsWith("image/"));
-    const imageUrls = validImages.map(file => URL.createObjectURL(file));
-    setImages(prev => [...prev, ...imageUrls]);
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFile(e.target.files[0]);
+    }
   };
+
+  const handleUpload = async () => {
+    if (!file) {
+      alert('Please select a file first.');
+      return;
+    }
+  
+    const formData = new FormData();
+    formData.append('file', file);
+  
+    try {
+      setUploading(true);
+  
+      const response = await fetch('https://foodie-backend-cn0s.onrender.com/predict', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Server error: ${response.status}`);
+      }
+  
+      const data = await response.json();
+      
+      navigate('/results', { state: { resultImage: data.imageUrl, otherData: data } });
+    } catch (error: any) {
+      console.error('Error uploading file:', error);
+      alert('Upload failed: ' + error.message);
+    } finally {
+      setUploading(false);
+    }
+  };
+  
 
   return (
     <div className="foodie-container">
-      <img src="/FOODIE.svg" alt="Foodie Logo" className="foodie-logo" />
-      
+      <img src={logo} alt="Foodie Logo" className="foodie-logo" />
+
       <div
-        className={`upload-section ${isDragging ? "dragging" : ""}`}
+        className={`upload-section ${dragging ? 'dragging' : ''}`}
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick={handleClickUpload}
+        onClick={() => document.getElementById('fileInput')?.click()}
       >
-        <p>Click to Choose or Drag & Drop Image Here</p>
+        <p>Drag & Drop your image here or click to select</p>
         <input
+          id="fileInput"
           type="file"
-          multiple
           accept="image/*"
-          ref={inputRef}
           onChange={handleFileChange}
           className="file-input"
+          style={{ display: 'none' }}
         />
       </div>
 
-      {/* Show previews below */}
-      <div className="preview-grid">
-        {images.map((src, index) => (
-          <img key={index} src={src} alt={`preview-${index}`} className="preview-image" />
-        ))}
-      </div>
+      {file && (
+        <div className="preview-grid">
+          <img src={URL.createObjectURL(file)} alt="Preview" className="preview-image" />
+        </div>
+      )}
 
-      <button className="test-button">Test</button>
+      <button
+        className="upload-button"
+        onClick={handleUpload}
+        disabled={!file || uploading}
+      >
+        {uploading ? 'Uploading...' : 'Upload'}
+      </button>
     </div>
   );
 }
+
+export default FOODIE;

@@ -7,8 +7,8 @@ body, html, #root {
   }
   
   .foodie-container {
-    min-height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
     display: flex;
     flex-direction: column;

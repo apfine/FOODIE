@@ -17,7 +17,7 @@ body, html, #root {
     overflow-y: auto; 
     position: relative;
     font-family: 'Poppins', sans-serif;
-    padding: 2rem 1rem; /* Small padding for smaller screens */
+    padding: ; /* Small padding for smaller screens */
     box-sizing: border-box;
   }
   
